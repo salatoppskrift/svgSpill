@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <h1>JavaScript Example</h1>
+    <h2>Change the Mood!</h2>
+
+    <p id="message">Click a button to change the mood.</p>
+    <p id="pointsVisual">Click a button to change the mood.</p>
+    <p id="mess2">Whatevy</p>
+    <div id="punkter">
+        x: <input id="punktX" type="number">
+        <br />
+        y: <input id="punktY" type="number">
+        <br />
+        <br />
+        valgt punkt: <input id="punktV" type="number">
+    </div>
+    <script>
+        class Handling {
+            constructor(melding, funk) {
+                //this.buttonHtml = `<button>${}</button>`
+                //this.funksjon = funk;
+                this.melding = melding;
+                this.funk = funk;
+            }
+
+            create() {
+                const butt = document.createElement("button");
+                butt.innerHTML = this.melding;
+                butt.addEventListener("click", this.funk);
+
+                return butt;
+                //return `<button onclick="${this.funk}">${this.melding}</button>`;
+            }
+        }
+        const points = [];
+        let chosenPoint = undefined;
+
+        const hands = [
+            new Handling("Legg til ett punkt", () => {
+                const x = document.querySelector("#punktX").value;
+                const y = document.querySelector("#punktY").value;
+                chosenPoint = document.querySelector("#punktV").value;
+                if (x === "" || y === "" || parseInt(x) < 0 || parseInt(y) < 0 || chosenPoint === "") return;
+                points.splice(parseInt(chosenPoint), 0, [parseInt(x), parseInt(y)]);
+                console.log("Punkt lagt til..");
+                document.querySelector("#punktX").value = "";
+                document.querySelector("#punktY").value = "";
+                document.querySelector("#punktV").value = "";
+                updateView();
+            }).create(),
+            new Handling("Fjern ett punkt", () => {
+                chosenPoint = document.querySelector("#punktV").value;
+                if (chosenPoint === "") return;
+                points.splice(parseInt(chosenPoint), 1);
+                console.log("Fjernet punkt..");
+                document.querySelector("#punktV").value = "";
+                //chosenPoint = undefined;
+                updateView();
+            }).create(),
+        ];
+        updateView();
+
+        function updateView() {
+            document.querySelector("#mess2").innerHTML = "";
+            document.querySelector("#pointsVisual").innerHTML = `"`;
+            points.forEach(point => {
+                document.querySelector("#pointsVisual").innerHTML += point + " ";
+            });
+            document.querySelector("#pointsVisual").innerHTML =
+                document.querySelector("#pointsVisual").innerHTML.trim();
+            document.querySelector("#pointsVisual").innerHTML += `"`;
+
+            hands.forEach(hand => {
+                document.querySelector("#mess2").appendChild(hand);
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>
